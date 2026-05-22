@@ -20,7 +20,7 @@ Chainguard Libraries mirrors Maven Central artifacts and applies patches to tran
 
 ## Setup Reminder
 
-If the Chainguard Maven repository is not already configured, suggest running the `chainguard-libraries-java` skill or manually configuring `~/.m2/settings.xml` / `build.gradle` to point to `https://libraries.cgr.dev/java/` with a token from `chainctl libraries token java`.
+If the Chainguard Maven repository is not already configured, suggest running the `chainguard-libraries-java` skill or manually configuring `~/.m2/settings.xml` / `build.gradle` to point to `https://libraries.cgr.dev/java/` with a token from `chainctl auth pull-token create --repository=java`.
 
 ## Key Packages Available
 

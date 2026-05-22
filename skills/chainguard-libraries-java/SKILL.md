@@ -7,13 +7,18 @@ description: Configure a Java/Maven or Gradle project to use Chainguard Librarie
 
 Chainguard Libraries provides hardened Maven artifacts with reduced CVE exposure. Artifacts are distributed via a private Maven repository that requires an auth token.
 
-## Step 1: Generate a Libraries Token
+## Step 1: Generate a Libraries Pull Token
 
 ```bash
-chainctl libraries token java
+chainctl auth pull-token create --repository=java
 ```
 
 Copy the token — you will use it as a Maven repository password.
+
+Optional flags:
+- `--ttl=24h` — token lifetime (max `8760h` / 1 year). Defaults to a short-lived token.
+- `--parent=my-org` — create the pull token under a specific organization.
+- `--name=my-ci-token` — label the pull token for easier identification later.
 
 ## Step 2: Configure Maven (`~/.m2/settings.xml`)
 
@@ -53,7 +58,7 @@ Add the Chainguard repository and credentials:
 Export your token:
 
 ```bash
-export CHAINGUARD_LIBRARIES_JAVA_TOKEN=$(chainctl libraries token java)
+export CHAINGUARD_LIBRARIES_JAVA_TOKEN=$(chainctl auth pull-token create --repository=java)
 ```
 
 ## Step 3: Configure Gradle (`build.gradle` or `build.gradle.kts`)
@@ -88,5 +93,5 @@ mvn dependency:resolve -U
 
 - Chainguard Libraries mirrors popular Maven Central artifacts with patched transitive dependencies. Use the same `groupId:artifactId:version` coordinates — no changes to dependency declarations needed.
 - If a package is not yet available in Chainguard Libraries, Maven/Gradle will fall through to the Central fallback repository.
-- Token refresh: run `chainctl libraries token java` to get a fresh token when the current one expires.
+- Token refresh: run `chainctl auth pull-token create --repository=java` to mint a new pull token when the current one expires. For long-lived CI use, pass `--ttl=24h` (or up to `8760h`).
 - Do not commit tokens. Store `CHAINGUARD_LIBRARIES_JAVA_TOKEN` in CI secrets or a secrets manager.

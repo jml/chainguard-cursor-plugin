@@ -7,13 +7,18 @@ description: Configure a Python project to use Chainguard Libraries for hardened
 
 Chainguard Libraries provides hardened Python packages with reduced CVE exposure. Packages are distributed via a private PyPI-compatible index that requires an auth token.
 
-## Step 1: Generate a Libraries Token
+## Step 1: Generate a Libraries Pull Token
 
 ```bash
-chainctl libraries token python
+chainctl auth pull-token create --repository=python
 ```
 
 Copy the token.
+
+Optional flags:
+- `--ttl=24h` — token lifetime (max `8760h` / 1 year).
+- `--parent=my-org` — create the pull token under a specific organization.
+- `--name=my-ci-token` — label the pull token for easier identification later.
 
 ## Step 2: Configure pip
 
@@ -36,7 +41,7 @@ extra-index-url = https://pypi.org/simple/
 For authentication, set the token as an environment variable and reference it:
 
 ```bash
-export CHAINGUARD_LIBRARIES_PYTHON_TOKEN=$(chainctl libraries token python)
+export CHAINGUARD_LIBRARIES_PYTHON_TOKEN=$(chainctl auth pull-token create --repository=python)
 export PIP_INDEX_URL=https://user:${CHAINGUARD_LIBRARIES_PYTHON_TOKEN}@libraries.cgr.dev/python/simple/
 ```
 
@@ -93,7 +98,7 @@ In GitHub Actions:
 
 ```yaml
 - name: Set Chainguard Libraries token
-  run: echo "CHAINGUARD_LIBRARIES_PYTHON_TOKEN=$(chainctl libraries token python)" >> $GITHUB_ENV
+  run: echo "CHAINGUARD_LIBRARIES_PYTHON_TOKEN=$(chainctl auth pull-token create --repository=python --ttl=2h)" >> $GITHUB_ENV
 
 - name: Install dependencies
   run: pip install -r requirements.txt
@@ -106,4 +111,4 @@ In GitHub Actions:
 - Chainguard Libraries mirrors PyPI packages with patched transitive dependencies. Package names and import paths are identical.
 - Avoid hardcoding tokens in `pip.conf` or `pyproject.toml` — always use environment variable interpolation.
 - Configure `extra-index-url` pointing to PyPI as a fallback for packages not yet in Chainguard Libraries.
-- Token refresh: run `chainctl libraries token python` when the current token expires.
+- Token refresh: run `chainctl auth pull-token create --repository=python` to mint a new pull token when the current one expires. For long-lived CI use, pass `--ttl=24h` (or up to `8760h`).

@@ -21,7 +21,7 @@ Chainguard Libraries mirrors npm packages and patches transitive dependency vuln
 
 ## Setup Reminder
 
-If the Chainguard npm registry is not already configured, suggest running the `chainguard-libraries-javascript` skill. It walks through configuring `.npmrc`, Yarn, or pnpm to use `https://libraries.cgr.dev/js/` with a token from `chainctl libraries token javascript`.
+If the Chainguard npm registry is not already configured, suggest running the `chainguard-libraries-javascript` skill. It walks through configuring `.npmrc`, Yarn, or pnpm to use `https://libraries.cgr.dev/js/` via `chainctl auth configure-npm` (or a pull token minted with `chainctl auth pull-token create --repository=javascript`).
 
 ## Key Packages Available
 

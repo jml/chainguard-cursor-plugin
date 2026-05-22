@@ -21,7 +21,7 @@ Chainguard Libraries mirrors PyPI packages and patches transitive dependency vul
 
 ## Setup Reminder
 
-If the Chainguard Python index is not already configured, suggest running the `chainguard-libraries-python` skill. It covers pip, uv, and Poetry configuration to use `https://libraries.cgr.dev/python/simple/` with a token from `chainctl libraries token python`.
+If the Chainguard Python index is not already configured, suggest running the `chainguard-libraries-python` skill. It covers pip, uv, and Poetry configuration to use `https://libraries.cgr.dev/python/simple/` with a token from `chainctl auth pull-token create --repository=python`.
 
 ## Key Packages Available
 
